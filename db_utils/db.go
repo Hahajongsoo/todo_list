@@ -9,7 +9,7 @@ import (
 )
 
 func UseDB() *sql.DB {
-	db, err := sql.Open("mysql", "todo_admin:1234@tcp(todo-db.cqikhj0kpnwj.ap-northeast-2.rds.amazonaws.com)/todo")
+	db, err := sql.Open("mysql", "todo_admin:1234@tcp(203.229.240.67:8888)/todo")
 	if err != nil {
 		log.Fatal(err)
 	}
