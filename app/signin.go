@@ -24,7 +24,7 @@ type GoogleUserInfoID struct {
 }
 
 var googleOuthConfig = oauth2.Config{
-	RedirectURL:  "http://hahajong.store/auth/google/callback",
+	RedirectURL:  "https://hahajong.store/todo/auth/google/callback",
 	ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 	ClientSecret: os.Getenv("GOOGLE_SECRET_KEY"),
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
@@ -68,7 +68,7 @@ func googleAuthCallback(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(data, &userInfo)
 	if err != nil {
 		log.Println(err.Error())
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "/todo", http.StatusTemporaryRedirect)
 		return
 	}
 	session, err := store.Get(r, "session")
@@ -84,7 +84,7 @@ func googleAuthCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/todo", http.StatusTemporaryRedirect)
 }
 
 const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="

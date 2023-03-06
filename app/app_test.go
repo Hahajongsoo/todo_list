@@ -27,7 +27,7 @@ func TestTodos(t *testing.T) {
 	defer ts.Close()
 
 	// add todos
-	resp, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo"}})
+	resp, err := http.PostForm(ts.URL+"/todo/todos", url.Values{"name": {"Test todo"}})
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
 	var todo model.Todo
@@ -36,7 +36,7 @@ func TestTodos(t *testing.T) {
 	assert.Equal(todo.Name, "Test todo")
 	id1 := todo.ID
 
-	resp, err = http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo2"}})
+	resp, err = http.PostForm(ts.URL+"/todo/todos", url.Values{"name": {"Test todo2"}})
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
 	err = json.NewDecoder(resp.Body).Decode(&todo)
@@ -45,7 +45,7 @@ func TestTodos(t *testing.T) {
 	id2 := todo.ID
 
 	// get todos
-	resp, err = http.Get(ts.URL + "/todos")
+	resp, err = http.Get(ts.URL + "/todo/todos")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 	todos := []*model.Todo{}
@@ -63,10 +63,10 @@ func TestTodos(t *testing.T) {
 	}
 
 	// test complete
-	resp, err = http.Get(ts.URL + "/complete-todo/" + strconv.Itoa(id1) + "?completed=true")
+	resp, err = http.Get(ts.URL + "/todo/complete-todo/" + strconv.Itoa(id1) + "?completed=true")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
-	resp, err = http.Get(ts.URL + "/todos")
+	resp, err = http.Get(ts.URL + "/todo/todos")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 	todos = []*model.Todo{}
@@ -80,12 +80,12 @@ func TestTodos(t *testing.T) {
 	}
 
 	// test delete
-	req, _ := http.NewRequest("DELETE", ts.URL+"/todos/"+strconv.Itoa(id1), nil)
+	req, _ := http.NewRequest("DELETE", ts.URL+"/todo/todos/"+strconv.Itoa(id1), nil)
 	resp, err = http.DefaultClient.Do(req)
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 
-	resp, err = http.Get(ts.URL + "/todos")
+	resp, err = http.Get(ts.URL + "/todo/todos")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 	todos = []*model.Todo{}

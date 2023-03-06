@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	dbConn := "postgresql://postgres:1234@192.168.56.101/?sslmode=disable"
+	dbConn := "todo.db"
 	m := app.MakeHandler(dbConn)
 	defer m.Close()
 

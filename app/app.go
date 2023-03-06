@@ -36,7 +36,7 @@ var getSessionID = func(r *http.Request) string {
 }
 
 func (a *AppHandler) indexHandler(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/todo.html", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/todo/todo.html", http.StatusTemporaryRedirect)
 }
 
 func (a *AppHandler) getTodoListHandler(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +99,7 @@ func CheckSignin(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) 
 		return
 	}
 	// if user not sign in
-	http.Redirect(w, r, "/signin.html", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/todo/signin.html", http.StatusTemporaryRedirect)
 }
 
 func MakeHandler(filepath string) *AppHandler {
@@ -111,12 +111,12 @@ func MakeHandler(filepath string) *AppHandler {
 		Handler: n,
 		db:      model.NewDBhandler(filepath),
 	}
-	r.HandleFunc("/todos", a.getTodoListHandler).Methods("GET")
-	r.HandleFunc("/todos", a.addTodoHandler).Methods("POST")
-	r.HandleFunc("/todos/{id:[0-9]+}", a.removeTodoHandler).Methods("DELETE")
-	r.HandleFunc("/complete-todo/{id:[0-9]+}", a.completeTodoHandler).Methods("GET")
-	r.HandleFunc("/", a.indexHandler)
-	r.HandleFunc("/auth/google/login", googleLoginHandler)
-	r.HandleFunc("/auth/google/callback", googleAuthCallback)
+	r.HandleFunc("/todo/todos", a.getTodoListHandler).Methods("GET")
+	r.HandleFunc("/todo/todos", a.addTodoHandler).Methods("POST")
+	r.HandleFunc("/todo/todos/{id:[0-9]+}", a.removeTodoHandler).Methods("DELETE")
+	r.HandleFunc("/todo/complete-todo/{id:[0-9]+}", a.completeTodoHandler).Methods("GET")
+	r.HandleFunc("/todo/", a.indexHandler)
+	r.HandleFunc("/todo/auth/google/login", googleLoginHandler)
+	r.HandleFunc("/todo/auth/google/callback", googleAuthCallback)
 	return a
 }
